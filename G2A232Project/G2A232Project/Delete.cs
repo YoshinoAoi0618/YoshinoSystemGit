@@ -21,13 +21,13 @@ namespace G2A232Project
         private void Delete_Load(object sender, EventArgs e)
         {
             //偶数行の背景色を変更
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
+            deleteDataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
             //Gridの幅を列に揃える
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            deleteDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //行の高さをヘッダーとセルに合わせて自動調整
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            deleteDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
-            dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            deleteDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
         //戻る
         private void button2_Click(object sender, EventArgs e)
@@ -36,15 +36,15 @@ namespace G2A232Project
             _menu.Show();
             this.Visible = false;
         }
-
-        private void button3_Click(object sender, EventArgs e)
+        //削除
+        private void Btn_delete_Click_1(object sender, EventArgs e)
         {
             try
             {
                 using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
                 {
                     con.Open();
-                    if(MessageBox.Show("削除してもよろしいですか？","注意",MessageBoxButtons.YesNo,MessageBoxIcon.Hand)==DialogResult.Yes)
+                    if (MessageBox.Show("削除してもよろしいですか？", "注意", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
                     {
                         using (SQLiteTransaction trans = con.BeginTransaction())
                         {
@@ -54,24 +54,24 @@ namespace G2A232Project
                             // パラメータセット
                             cmd.Parameters.Add("Id", System.Data.DbType.Int64);
                             // データ削除
-                            cmd.Parameters["Id"].Value = int.Parse(textBox6.Text);
+                            cmd.Parameters["Id"].Value = int.Parse(txt_delete.Text);
                             cmd.ExecuteNonQuery();
                             // コミット
                             trans.Commit();
                         }
                     }
-                    
+
                 }
             }
             //条件に合わなかったら、メッセージボックスにエラー内容を表示
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
         }
+
         //確認
-        private void button1_Click(object sender, EventArgs e)
+        private void Btn_check_Click_1(object sender, EventArgs e)
         {
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
@@ -80,7 +80,7 @@ namespace G2A232Project
                 // SQLの実行
                 var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
                 adapter.Fill(dataTable);
-                dataGridView1.DataSource = dataTable;
+                deleteDataGridView.DataSource = dataTable;
             }
         }
     }
