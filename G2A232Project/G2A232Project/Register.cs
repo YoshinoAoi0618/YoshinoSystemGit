@@ -13,24 +13,27 @@ namespace G2A232Project
 {
     public partial class Register : Form
     {
+        //変数
+        private Menu _menu;
+
         public Register()
         {
             InitializeComponent();
         }
-        private Menu _menu;
+
         private void Register_Load(object sender, EventArgs e)
         {
             //偶数行の背景色を変更
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
+            register_DataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
             //Gridの幅を列に揃える
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            register_DataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //行の高さをヘッダーとセルに合わせて自動調整
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            register_DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
-            dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            register_DataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
-        //登録
-        private void button3_Click(object sender, EventArgs e)
+            //登録
+            private void Btn_register_Click(object sender,System.Windows.Forms.KeyPressEventArgs e)
         {
             try
             {
@@ -50,21 +53,33 @@ namespace G2A232Project
                         cmd.Parameters.Add("Email", System.Data.DbType.String);
 
                         // データ追加
-                        cmd.Parameters["Name"].Value = textBox1.Text;
-                        cmd.Parameters["Address"].Value = textBox2.Text;
-                        cmd.Parameters["Birth"].Value = int.Parse(textBox3.Text);
-                        cmd.Parameters["Tel"].Value = textBox4.Text;
-                        cmd.Parameters["Email"].Value = textBox5.Text;
+                        cmd.Parameters["Name"].Value = txt_name.Text;
+                        cmd.Parameters["Address"].Value = txt_address.Text;
+                        cmd.Parameters["Birth"].Value = int.Parse(txt_birth.Text);
+                        cmd.Parameters["Tel"].Value = txt_tel.Text;
+                        cmd.Parameters["Email"].Value = txt_mail.Text;
                         cmd.ExecuteNonQuery();
                         // コミット
                         trans.Commit();
                     }
                 }
-                textBox1.ResetText();
-                textBox2.ResetText();
-                textBox3.ResetText();
-                textBox4.ResetText();
-                textBox5.ResetText();
+                //データ入力後"登録"ボタンを押したらテキストボックスをリセットする
+                txt_name.ResetText();
+                txt_address.ResetText();
+                txt_birth.ResetText();
+                txt_tel.ResetText();
+                txt_mail.ResetText();
+
+                //登録したらデータグリッドに表示
+                using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
+                {
+                    // DataTableを生成します。
+                    var dataTable = new DataTable();
+                    // SQLの実行
+                    var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
+                    adapter.Fill(dataTable);
+                    register_DataGridView.DataSource = dataTable;
+                }
             }
             //条件に合わなかったら、メッセージボックスにエラー内容を表示
             catch (Exception ex)
@@ -74,24 +89,11 @@ namespace G2A232Project
             
         }
         //戻る
-        private void button2_Click(object sender, EventArgs e)
+        private void Btn_exit_Click(object sender, EventArgs e)
         {
             _menu = new Menu();
             _menu.Show();
             this.Visible = false;
-        }
-        //確認
-        private void button1_Click(object sender, EventArgs e)
-        {
-            using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
-            {
-                // DataTableを生成します。
-                var dataTable = new DataTable();
-                // SQLの実行
-                var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
-                adapter.Fill(dataTable);
-                dataGridView1.DataSource = dataTable;
-            }
         }
     }
 }
