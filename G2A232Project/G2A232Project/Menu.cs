@@ -13,56 +13,58 @@ namespace G2A232Project
 {
     public partial class Menu : Form
     {
-        public Menu()
-        {
-            InitializeComponent();
-        }
         //変数
         private Top _top;
         private Register _register;
         private Change _change;
         private Search _search;
         private Delete _delete;
+
+
+        public Menu()
+        {
+            InitializeComponent();
+        }
         private void Menu_Load(object sender, EventArgs e)
         {
         }
         //タイトル画面へ遷移
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_exit_Click(object sender, EventArgs e)
         {
             _top = new Top();
             _top.Show();
             this.Visible = false;
         }
         //登録画面へ遷移
-        private void button2_Click(object sender, EventArgs e)
+        private void Btn_register_Click(object sender, EventArgs e)
         {
             _register = new Register();
             _register.Show();
             this.Visible = false;
         }
         //変更画面へ遷移
-        private void button3_Click(object sender, EventArgs e)
+        private void Btn_change_Click(object sender, EventArgs e)
         {
             _change = new Change();
             _change.Show();
             this.Visible = false;
         }
         //検索画面へ遷移
-        private void button4_Click(object sender, EventArgs e)
+        private void Btn_serach_Click(object sender, EventArgs e)
         {
             _search = new Search();
             _search.Show();
             this.Visible = false;
         }
         //削除画面へ遷移
-        private void button5_Click(object sender, EventArgs e)
+        private void Btn_delete_Click(object sender, EventArgs e)
         {
             _delete = new Delete();
             _delete.Show();
             this.Visible = false;
         }
         //テーブル作成
-        private void button6_Click(object sender, EventArgs e)
+        private void Btn_creatTb_Click(object sender, EventArgs e)
         {
             try
             {
@@ -87,7 +89,7 @@ namespace G2A232Project
             }
         }
         //テーブル削除
-        private void button7_Click(object sender, EventArgs e)
+        private void Btn_deleteTb_Click(object sender, EventArgs e)
         {
             // システム終了の確認ダイアログ
             if (MessageBox.Show("削除してもよろしいですか?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
