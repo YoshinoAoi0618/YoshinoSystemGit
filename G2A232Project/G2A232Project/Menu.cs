@@ -1,70 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
 namespace G2A232Project
 {
+    // メニュークラス
     public partial class Menu : Form
     {
         //変数
-        private Top _top;
-        private Register _register;
-        private Change _change;
-        private Search _search;
-        private Delete _delete;
+        private Top top;
+        private Register register;
+        private Change change;
+        private Search search;
+        private Delete delete;
+
+        // SQL文を "const"で定数化
+        // テーブル作成SQL
+        private const string CREATE_TABLE = "create table MenberTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "" + "Name TEXT, Address TEXT, Birth INTEGER, Tel TEXT, Email TEXT)";
+        // テーブル削除SQL
+        private const string dropTable = "drop table MenberTable";
 
 
         public Menu()
         {
             InitializeComponent();
         }
-        private void Menu_Load(object sender, EventArgs e)
+        private void MenuLoad(object sender, EventArgs e)
         {
         }
-        //タイトル画面へ遷移
-        private void btn_exit_Click(object sender, EventArgs e)
+        /// <summary>
+        /// タイトル画面へ遷移
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnExitClick(object sender, EventArgs e)
         {
-            _top = new Top();
-            _top.Show();
+            top = new Top();
+            top.Show();
             this.Visible = false;
         }
-        //登録画面へ遷移
-        private void Btn_register_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 登録画面へ遷移
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnRegisterClick(object sender, EventArgs e)
         {
-            _register = new Register();
-            _register.Show();
+            register = new Register();
+            register.Show();
             this.Visible = false;
         }
-        //変更画面へ遷移
-        private void Btn_change_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 変更画面へ遷移
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnChangeClick(object sender, EventArgs e)
         {
-            _change = new Change();
-            _change.Show();
+            change = new Change();
+            change.Show();
             this.Visible = false;
         }
-        //検索画面へ遷移
-        private void Btn_serach_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 検索画面へ遷移
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSerachClick(object sender, EventArgs e)
         {
-            _search = new Search();
-            _search.Show();
+            search = new Search();
+            search.Show();
             this.Visible = false;
         }
-        //削除画面へ遷移
-        private void Btn_delete_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 削除画面へ遷移
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDeleteClick(object sender, EventArgs e)
         {
-            _delete = new Delete();
-            _delete.Show();
+            delete = new Delete();
+            delete.Show();
             this.Visible = false;
         }
-        //テーブル作成
-        private void Btn_creatTb_Click(object sender, EventArgs e)
+        /// <summary>
+        /// テーブル作成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCreatTbClick(object sender, EventArgs e)
         {
             try
             {
@@ -75,8 +100,7 @@ namespace G2A232Project
                     using (SQLiteCommand command = con.CreateCommand())
                     {
                         //　データテーブルの内容(氏名,住所,生年月日,電話番号,メールアドレス)
-                        command.CommandText = "create table t_product (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                             "Name TEXT, Address TEXT, Birth INTEGER, Tel TEXT, Email TEXT)";
+                        command.CommandText = CREATE_TABLE;
                         command.ExecuteNonQuery();
                     }
                     con.Close();
@@ -88,8 +112,12 @@ namespace G2A232Project
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //テーブル削除
-        private void Btn_deleteTb_Click(object sender, EventArgs e)
+        /// <summary>
+        /// テーブル削除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDeleteTbClick(object sender, EventArgs e)
         {
             // システム終了の確認ダイアログ
             if (MessageBox.Show("削除してもよろしいですか?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
@@ -100,8 +128,7 @@ namespace G2A232Project
                     con.Open();
                     using (SQLiteCommand command = con.CreateCommand())
                     {
-                        command.CommandText =
-                            "drop table t_product";
+                        command.CommandText = dropTable;
                         command.ExecuteNonQuery();
                     }
                     con.Close();
