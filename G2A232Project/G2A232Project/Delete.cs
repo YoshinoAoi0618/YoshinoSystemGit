@@ -1,43 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
 namespace G2A232Project
 {
+    // 削除クラス
     public partial class Delete : Form
     {
-        private Menu _menu;
+        // 変数
+        private Menu menu;
+
+        // SQL文を "const"で定数化
+        // DELETE文SQL
+        private const string DELETE = "DELETE FROM MenberTable WHERE ID = @Id;";
+
+
         public Delete()
         {
             InitializeComponent();
         }
-        private void Delete_Load(object sender, EventArgs e)
+        /// <summary>
+        /// フォームロード中の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteLoad(object sender, EventArgs e)
         {
             //偶数行の背景色を変更
-            deleteDataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
+            MenberTableDataView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
             //Gridの幅を列に揃える
-            deleteDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            MenberTableDataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //行の高さをヘッダーとセルに合わせて自動調整
-            deleteDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
-            deleteDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
-        //戻る
-        private void button2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 戻る
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnExitClick(object sender, EventArgs e)
         {
-            _menu = new Menu();
-            _menu.Show();
+            menu = new Menu();
+            menu.Show();
             this.Visible = false;
         }
-        //削除
-        private void Btn_delete_Click_1(object sender, EventArgs e)
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDeleteClick(object sender, EventArgs e)
         {
             try
             {
@@ -50,7 +66,7 @@ namespace G2A232Project
                         {
                             SQLiteCommand cmd = con.CreateCommand();
                             // インサート
-                            cmd.CommandText = "DELETE FROM t_product WHERE ID = @Id;";
+                            cmd.CommandText = DELETE;
                             // パラメータセット
                             cmd.Parameters.Add("Id", System.Data.DbType.Int64);
                             // データ削除
@@ -70,8 +86,12 @@ namespace G2A232Project
             }
         }
 
-        //確認
-        private void Btn_check_Click_1(object sender, EventArgs e)
+        /// <summary>
+        /// 確認
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCheckClick(object sender, EventArgs e)
         {
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
@@ -80,7 +100,7 @@ namespace G2A232Project
                 // SQLの実行
                 var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
                 adapter.Fill(dataTable);
-                deleteDataGridView.DataSource = dataTable;
+                MenberTableDataView.DataSource = dataTable;
             }
         }
     }
