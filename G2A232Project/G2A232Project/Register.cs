@@ -1,39 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
 namespace G2A232Project
 {
+    // 登録クラス
     public partial class Register : Form
     {
         //変数
-        private Menu _menu;
+        private Menu menu;
+        // SQL文を "const"で定数化
+        // INSERT文SQL
+        private const string REGISTER_INSERT = "INSERT INTO MenberTable(name, address, birth, tel, email)" +
+            " VALUES (@Name, @Address, @Birth, @Tel, @Email)";
+        // SELECT文SQL
+        private const string REGISTER_SELECT = "SELECT * FROM MenberTable";
 
         public Register()
         {
             InitializeComponent();
         }
-
-        private void Register_Load(object sender, EventArgs e)
+        /// <summary>
+        /// フォームロード中の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RegisterLoad(object sender, EventArgs e)
         {
             //偶数行の背景色を変更
-            register_DataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
+            MenberTableDataView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
             //Gridの幅を列に揃える
-            register_DataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            MenberTableDataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //行の高さをヘッダーとセルに合わせて自動調整
-            register_DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
-            register_DataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
-            //登録
-            private void Btn_register_Click(object sender,System.Windows.Forms.KeyPressEventArgs e)
+        /// <summary>
+        /// 登録
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnRegisterClick(object sender, EventArgs e)
         {
             try
             {
@@ -44,7 +54,7 @@ namespace G2A232Project
                     {
                         SQLiteCommand cmd = con.CreateCommand();
                         // インサート
-                        cmd.CommandText = "INSERT INTO t_product (name, address, birth, tel, email) VALUES (@Name, @Address, @Birth, @Tel, @Email)";
+                        cmd.CommandText = REGISTER_INSERT;
                         // パラメータセット
                         cmd.Parameters.Add("Name", System.Data.DbType.String);
                         cmd.Parameters.Add("Address", System.Data.DbType.String);
@@ -76,9 +86,9 @@ namespace G2A232Project
                     // DataTableを生成します。
                     var dataTable = new DataTable();
                     // SQLの実行
-                    var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
+                    var adapter = new SQLiteDataAdapter(REGISTER_SELECT, con);
                     adapter.Fill(dataTable);
-                    register_DataGridView.DataSource = dataTable;
+                    MenberTableDataView.DataSource = dataTable;
                 }
             }
             //条件に合わなかったら、メッセージボックスにエラー内容を表示
@@ -86,13 +96,16 @@ namespace G2A232Project
             {
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
-        //戻る
-        private void Btn_exit_Click(object sender, EventArgs e)
+        /// <summary>
+        /// メニューに戻る
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExitClick(object sender, EventArgs e)
         {
-            _menu = new Menu();
-            _menu.Show();
+            menu = new Menu();
+            menu.Show();
             this.Visible = false;
         }
     }
