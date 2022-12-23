@@ -1,34 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
 namespace G2A232Project
 {
+    // 変更クラス
     public partial class Change : Form
     {
+        // 変数
+        private Menu menu;
+
+        // SQL文を "const"で定数化
+        // UPDATE文SQL
+        private const string CHANGE_UPDATE = "UPDATE MenberTable set Name = ?, Address = ?, Birth = ?, Tel = ?, Email = ? WHERE ID = @Id;";
+        // SELECT文SQL
+        private const string CHANGE_SELECT = "SELECT * FROM MenberTable";
+
         public Change()
         {
             InitializeComponent();
         }
-        private Menu _menu;
-
-        private void Change_Load(object sender, EventArgs e)
+        
+        /// <summary>
+        /// フォームロード中の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeLoad(object sender, EventArgs e)
         {
             //偶数行の背景色を変更
-            changeDataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
+            MenberTableDataView.AlternatingRowsDefaultCellStyle.BackColor = Color.SkyBlue;
             //Gridの幅を列に揃える
-            changeDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            MenberTableDataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //行の高さをヘッダーとセルに合わせて自動調整
-            changeDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
-            changeDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             //フォームを開いたら自動でデータを表示
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
@@ -36,20 +45,28 @@ namespace G2A232Project
                 // DataTableを生成します。
                 var dataTable = new DataTable();
                 // SQLの実行
-                var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
+                var adapter = new SQLiteDataAdapter(CHANGE_SELECT, con);
                 adapter.Fill(dataTable);
-                changeDataGridView.DataSource = dataTable;
+                MenberTableDataView.DataSource = dataTable;
             }
         }
-        //メニューに戻る
-        private void Btn_exit_Click(object sender, EventArgs e)
+        /// <summary>
+        /// メニューに戻る
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExitClick(object sender, EventArgs e)
         {
-            _menu = new Menu();
-            _menu.Show();
+            menu = new Menu();
+            menu.Show();
             this.Visible = false;
         }
-        //変更
-        private void Btn_change_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 変更
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnChangeClick(object sender, EventArgs e)
         {
             try
             {
@@ -60,8 +77,7 @@ namespace G2A232Project
                     {
                         SQLiteCommand cmd = con.CreateCommand();
                         // インサート
-                        //cmd.CommandText = "UPDATE t_product set Name = @Name, Address = @Address, Birth = @Birth, Tel = @Tel, Email = @Email WHERE ID = @Id;";
-                        cmd.CommandText = "UPDATE t_product set Name = ?, Address = ?, Birth = ?, Tel = ?, Email = ? WHERE ID = @Id;";
+                        cmd.CommandText = CHANGE_UPDATE;
                         // パラメータセット
                         cmd.Parameters.Add("Name", System.Data.DbType.String);
                         cmd.Parameters.Add("Address", System.Data.DbType.String);
@@ -95,17 +111,21 @@ namespace G2A232Project
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }   
         }
-        // 確認
-        private void Btn_check_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 確認
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCheckClick(object sender, EventArgs e)
         {
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
                 // DataTableを生成します。
                 var dataTable = new DataTable();
                 // SQLの実行
-                var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
+                var adapter = new SQLiteDataAdapter(CHANGE_SELECT, con);
                 adapter.Fill(dataTable);
-                changeDataGridView.DataSource = dataTable;
+                MenberTableDataView.DataSource = dataTable;
             }
 
         }
