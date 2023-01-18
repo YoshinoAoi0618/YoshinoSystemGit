@@ -56,11 +56,11 @@ namespace G2A232Project
                         // インサート
                         cmd.CommandText = REGISTER_INSERT;
                         // パラメータセット
-                        cmd.Parameters.Add("Name", System.Data.DbType.String);
-                        cmd.Parameters.Add("Address", System.Data.DbType.String);
-                        cmd.Parameters.Add("Birth", System.Data.DbType.Int64);
-                        cmd.Parameters.Add("Tel", System.Data.DbType.String);
-                        cmd.Parameters.Add("Email", System.Data.DbType.String);
+                        cmd.Parameters.Add("Name",DbType.String);
+                        cmd.Parameters.Add("Address",DbType.String);
+                        cmd.Parameters.Add("Birth",DbType.Int64);
+                        cmd.Parameters.Add("Tel",DbType.String);
+                        cmd.Parameters.Add("Email",DbType.String);
 
                         // データ追加
                         cmd.Parameters["Name"].Value = txt_name.Text;
