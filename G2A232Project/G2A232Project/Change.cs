@@ -38,17 +38,8 @@ namespace G2A232Project
             MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
             MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
             //フォームを開いたら自動でデータを表示
-            using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
-            {
-                // DataTableを生成します。
-                var dataTable = new DataTable();
-                // SQLの実行
-                var adapter = new SQLiteDataAdapter(CHANGE_SELECT, con);
-                adapter.Fill(dataTable);
-                MenberTableDataView.DataSource = dataTable;
-            }
+            disPlay();
         }
         /// <summary>
         /// メニューに戻る
@@ -79,12 +70,12 @@ namespace G2A232Project
                         // インサート
                         cmd.CommandText = CHANGE_UPDATE;
                         // パラメータセット
-                        cmd.Parameters.Add("Name", System.Data.DbType.String);
-                        cmd.Parameters.Add("Address", System.Data.DbType.String);
-                        cmd.Parameters.Add("Birth", System.Data.DbType.Int64);
-                        cmd.Parameters.Add("Tel", System.Data.DbType.String);
-                        cmd.Parameters.Add("Email", System.Data.DbType.String);
-                        cmd.Parameters.Add("Id", System.Data.DbType.Int64);
+                        cmd.Parameters.Add("Name",DbType.String);
+                        cmd.Parameters.Add("Address",DbType.String);
+                        cmd.Parameters.Add("Birth",DbType.Int64);
+                        cmd.Parameters.Add("Tel",DbType.String);
+                        cmd.Parameters.Add("Email",DbType.String);
+                        cmd.Parameters.Add("Id",DbType.Int64);
                         // データ修正
                         cmd.Parameters["Name"].Value = txt_name.Text;
                         cmd.Parameters["Address"].Value = txt_address.Text;
@@ -97,6 +88,7 @@ namespace G2A232Project
                         trans.Commit();
                     }
                 }
+                disPlay();
                 //データ入力後"変更"ボタンを押したらテキストボックスをリセットする
                 txt_name.ResetText();
                 txt_address.ResetText();
@@ -112,11 +104,9 @@ namespace G2A232Project
             }   
         }
         /// <summary>
-        /// 確認
+        /// データベースの情報を表示させる
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnCheckClick(object sender, EventArgs e)
+        private void disPlay()
         {
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
@@ -127,7 +117,6 @@ namespace G2A232Project
                 adapter.Fill(dataTable);
                 MenberTableDataView.DataSource = dataTable;
             }
-
         }
     }
 }

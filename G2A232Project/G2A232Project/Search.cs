@@ -55,6 +55,7 @@ namespace G2A232Project
                     adapter.Fill(dataTable);
                     MenberTableDataView.DataSource = dataTable;
                 }
+                txt_search.ResetText();
             }
             //条件に合わなかったら、メッセージボックスにエラー内容を表示
             catch (Exception ex)

@@ -15,6 +15,7 @@ namespace G2A232Project
         // SQL文を "const"で定数化
         // DELETE文SQL
         private const string DELETE = "DELETE FROM MenberTable WHERE ID = @Id;";
+        private const string DELETE_SELECT = "SELECT * FROM MenberTable";
 
 
         public Delete()
@@ -36,6 +37,8 @@ namespace G2A232Project
             MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
             MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //データを表示
+            disPlay();
         }
         /// <summary>
         /// 戻る
@@ -68,7 +71,7 @@ namespace G2A232Project
                             // インサート
                             cmd.CommandText = DELETE;
                             // パラメータセット
-                            cmd.Parameters.Add("Id", System.Data.DbType.Int64);
+                            cmd.Parameters.Add("Id",DbType.Int64);
                             // データ削除
                             cmd.Parameters["Id"].Value = int.Parse(txt_delete.Text);
                             cmd.ExecuteNonQuery();
@@ -76,8 +79,10 @@ namespace G2A232Project
                             trans.Commit();
                         }
                     }
-
                 }
+                txt_delete.ResetText();
+                // データを表示
+                disPlay();
             }
             //条件に合わなかったら、メッセージボックスにエラー内容を表示
             catch (Exception ex)
@@ -85,20 +90,17 @@ namespace G2A232Project
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-
         /// <summary>
-        /// 確認
+        /// データベースの情報を表示させる
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnCheckClick(object sender, EventArgs e)
+        private void disPlay()
         {
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
                 // DataTableを生成します。
                 var dataTable = new DataTable();
                 // SQLの実行
-                var adapter = new SQLiteDataAdapter("SELECT * FROM t_product", con);
+                var adapter = new SQLiteDataAdapter(DELETE_SELECT, con);
                 adapter.Fill(dataTable);
                 MenberTableDataView.DataSource = dataTable;
             }
