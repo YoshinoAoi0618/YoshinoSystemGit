@@ -49,11 +49,11 @@ namespace G2A232Project
                 using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
                 {
                     // DataTableを生成します。
-                    var dataTable = new DataTable();
+                    DataTable dt = new DataTable();
                     // SQLの実行
-                    var adapter = new SQLiteDataAdapter(SEARCH_SELECT + txt_search.Text, con);
-                    adapter.Fill(dataTable);
-                    MenberTableDataView.DataSource = dataTable;
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(SEARCH_SELECT + txt_search.Text, con);
+                    adapter.Fill(dt);
+                    MenberTableDataView.DataSource = dt;
                 }
                 txt_search.ResetText();
             }

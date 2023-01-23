@@ -63,7 +63,11 @@ namespace G2A232Project
                 using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
                 {
                     con.Open();
-                    if (MessageBox.Show("削除してもよろしいですか？", "注意", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
+                    if (MessageBox.Show("削除してもよろしいですか？", "注意", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
                     {
                         using (SQLiteTransaction trans = con.BeginTransaction())
                         {
@@ -71,7 +75,7 @@ namespace G2A232Project
                             // インサート
                             cmd.CommandText = DELETE;
                             // パラメータセット
-                            cmd.Parameters.Add("Id",DbType.Int64);
+                            cmd.Parameters.Add("Id", DbType.Int64);
                             // データ削除
                             cmd.Parameters["Id"].Value = int.Parse(txt_delete.Text);
                             cmd.ExecuteNonQuery();
@@ -98,11 +102,11 @@ namespace G2A232Project
             using (SQLiteConnection con = new SQLiteConnection("Data Source=G2A232.db"))
             {
                 // DataTableを生成します。
-                var dataTable = new DataTable();
+                DataTable dt = new DataTable();
                 // SQLの実行
-                var adapter = new SQLiteDataAdapter(DELETE_SELECT, con);
-                adapter.Fill(dataTable);
-                MenberTableDataView.DataSource = dataTable;
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(DELETE_SELECT, con);
+                adapter.Fill(dt);
+                MenberTableDataView.DataSource = dt;
             }
         }
     }

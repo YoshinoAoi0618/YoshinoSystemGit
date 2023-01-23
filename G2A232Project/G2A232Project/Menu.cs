@@ -13,7 +13,6 @@ namespace G2A232Project
         private Change change;
         private Search search;
         private Delete delete;
-
         // SQL文を "const"で定数化
         // テーブル作成SQL
         private const string CREATE_TABLE = "create table MenberTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -94,7 +93,7 @@ namespace G2A232Project
             try
             {
                 // コネクションを開いてテーブル作成して閉じる  
-                using (var con = new SQLiteConnection("Data Source=g2a232.db"))
+                using (SQLiteConnection con = new SQLiteConnection("Data Source=g2a232.db"))
                 {
                     con.Open();
                     using (SQLiteCommand command = con.CreateCommand())
@@ -120,10 +119,14 @@ namespace G2A232Project
         private void BtnDeleteTbClick(object sender, EventArgs e)
         {
             // システム終了の確認ダイアログ
-            if (MessageBox.Show("削除してもよろしいですか?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
+            if (MessageBox.Show("削除してもよろしいですか?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.No)
+            {
+                return;
+            }
+            else
             {
                 // コネクションを開いてテーブル削除して閉じる  
-                using (var con = new SQLiteConnection("Data Source=g2a232.db"))
+                using (SQLiteConnection con = new SQLiteConnection("Data Source=g2a232.db"))
                 {
                     con.Open();
                     using (SQLiteCommand command = con.CreateCommand())
@@ -134,6 +137,7 @@ namespace G2A232Project
                     con.Close();
                 }
             }
+
         }
     }
 }
