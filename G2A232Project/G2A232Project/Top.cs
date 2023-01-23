@@ -39,7 +39,11 @@ namespace G2A232Project
         private void BtnEndClick(object sender, EventArgs e)
         {
             // システム終了の確認ダイアログ
-            if (MessageBox.Show("終了してもよろしいですか?", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("終了してもよろしいですか?", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+            else
             {
                 // アプリケーション終了
                 Application.Exit();
