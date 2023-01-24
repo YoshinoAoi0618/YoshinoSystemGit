@@ -35,6 +35,8 @@ namespace G2A232Project
             MenberTableDataView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //列の項目名を中央揃え
             MenberTableDataView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //デフォルトだと空のセルが追加されるので、それを表示させない
+            MenberTableDataView.AllowUserToAddRows = false;
         }
 
         /// <summary>
